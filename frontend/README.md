@@ -35,44 +35,7 @@ This platform leverages blockchain technology to create a trustless ecosystem. D
 * **Web3 Wallet Integration**: Seamlessly connects with MetaMask for secure and easy donations.
 * **Immutable Audit Trail**: Every donation and distribution is a transaction recorded on the blockchain, publicly verifiable via Etherscan.
 
----
 
-## 🏗️ System Architecture
-
-The platform is built on a three-tier architecture: a frontend dApp for user interaction, a backend server for automated logic, and a smart contract on the blockchain for trust and execution.
-
-```mermaid
-graph TD
-    subgraph "Users"
-        A[1. Refugee]
-        B[2. Verifier / NGO]
-        C[3. Donor]
-    end
-
-    subgraph "Platform Interfaces (Frontend)"
-        D{Main User dApp (React)}
-        E{Verifier Portal}
-    end
-
-    subgraph "Platform Core (Off-Chain Services)"
-        F[Identity & Profile Service]
-        G[Verification Service]
-        H[Campaign Management Service]
-        I[Platform Rule Engine]
-    end
-
-    subgraph "Blockchain Trust Layer (On-Chain)"
-        J["Campaign Smart Contracts"]
-        L[Immutable Ledger / Audit Trail]
-    end
-    
-    A -- "Signs up via" --> D --> F
-    B -- "Logs into" --> E --> G -- "Verifies profile in" --> F
-    C -- "Donates via" --> D --> J
-    I -- "1. Fetches verified refugees from" --> F
-    I -- "2. Reads funds from" --> J
-    I -- "3. Executes distribution via" --> J --> L
-```
 
 ---
 
