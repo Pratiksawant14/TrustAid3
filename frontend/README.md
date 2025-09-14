@@ -1,70 +1,159 @@
-# Getting Started with Create React App
+# Decentralized Aid Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A proof-of-concept decentralized application (dApp) built on the Ethereum blockchain to provide a transparent, secure, and efficient platform for humanitarian aid. This project aims to solve the problem of corruption and inefficiency in traditional donation systems by ensuring that funds for specific crises are delivered directly to verified beneficiaries.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 📋 Table of Contents
+- [The Problem](#-the-problem)
+- [The Solution](#-the-solution)
+- [Key Features](#-key-features)
+- [System Architecture](#-system-architecture)
+- [Technology Stack](#-technology-stack)
+- [Getting Started](#-getting-started)
+- [Usage](#-usage)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## ❓ The Problem
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Traditional aid and donation platforms often suffer from a lack of transparency, high administrative overhead, and delays. Donors are rarely able to track their specific contributions to the intended recipients, and a significant portion of aid can be lost to corruption and operational costs.
 
-### `npm test`
+## ✨ The Solution
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This platform leverages blockchain technology to create a trustless ecosystem. Donations for specific, publicly listed campaigns (e.g., "Punjab Flood Relief") are sent to dedicated smart contracts. An independent network of verifiers (NGOs or appointed reviewers) vets and approves beneficiaries. An automated Rule Engine then distributes the collected funds directly from the smart contract to the verified individuals, with every transaction being publicly auditable on the blockchain.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🚀 Key Features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+* **Campaign-Based Donations**: Donors contribute to specific, segregated funds for different crises, ensuring their money is used for its intended purpose.
+* **Beneficiary Verification System**: A dedicated portal for NGOs or verifiers to review and approve aid applicants, adding a layer of trust and accountability.
+* **Transparent Fund Distribution**: An automated backend Rule Engine triggers fund distribution via a smart contract, eliminating intermediaries.
+* **Web3 Wallet Integration**: Seamlessly connects with MetaMask for secure and easy donations.
+* **Immutable Audit Trail**: Every donation and distribution is a transaction recorded on the blockchain, publicly verifiable via Etherscan.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🏗️ System Architecture
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The platform is built on a three-tier architecture: a frontend dApp for user interaction, a backend server for automated logic, and a smart contract on the blockchain for trust and execution.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```mermaid
+graph TD
+    subgraph "Users"
+        A[1. Refugee]
+        B[2. Verifier / NGO]
+        C[3. Donor]
+    end
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+    subgraph "Platform Interfaces (Frontend)"
+        D{Main User dApp (React)}
+        E{Verifier Portal}
+    end
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+    subgraph "Platform Core (Off-Chain Services)"
+        F[Identity & Profile Service]
+        G[Verification Service]
+        H[Campaign Management Service]
+        I[Platform Rule Engine]
+    end
 
-## Learn More
+    subgraph "Blockchain Trust Layer (On-Chain)"
+        J["Campaign Smart Contracts"]
+        L[Immutable Ledger / Audit Trail]
+    end
+    
+    A -- "Signs up via" --> D --> F
+    B -- "Logs into" --> E --> G -- "Verifies profile in" --> F
+    C -- "Donates via" --> D --> J
+    I -- "1. Fetches verified refugees from" --> F
+    I -- "2. Reads funds from" --> J
+    I -- "3. Executes distribution via" --> J --> L
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 💻 Technology Stack
 
-### Code Splitting
+* **Blockchain**: Solidity, Remix IDE, Sepolia Testnet, MetaMask
+* **Frontend**: React, Ethers.js, Material-UI (MUI)
+* **Backend**: Node.js, Express.js
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 🔧 Getting Started
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Follow these instructions to set up and run the project locally for development and testing.
 
-### Making a Progressive Web App
+### Prerequisites
+* [Node.js](https://nodejs.org/) (v16 or later)
+* [MetaMask](https://metamask.io/) browser extension
+* Sepolia ETH in your MetaMask wallet (from a faucet)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 1. Deploy the Smart Contract
+1.  Open the `Campaign.sol` code in the [Remix IDE](https://remix.ethereum.org/).
+2.  Compile the contract with a compatible Solidity version.
+3.  Deploy the contract to the **Sepolia Testnet**, providing the constructor arguments (`_title`, `initialOwner`).
+4.  **Important**: Copy the deployed **Contract Address** and the **ABI**.
 
-### Advanced Configuration
+### 2. Setup the Backend
+1.  Navigate to the `backend-engine` directory.
+    ```bash
+    cd backend-engine
+    ```
+2.  Install the dependencies.
+    ```bash
+    npm install
+    ```
+3.  Create a `.env` file in this folder and add your configuration.
+    ```env
+    CONTRACT_ADDRESS="YOUR_CONTRACT_ADDRESS"
+    CONTRACT_ABI='[...YOUR_ABI...]'
+    PRIVATE_KEY="YOUR_TEST_ACCOUNT_PRIVATE_KEY"
+    SEPOLIA_RPC_URL="YOUR_ALCHEMY_SEPOLIA_RPC_URL"
+    ```
+4.  Start the server.
+    ```bash
+    node server.js
+    ```
+    Your backend should now be running on `http://localhost:3001`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### 3. Setup the Frontend
+1.  In a **new terminal**, navigate to the `frontend-dapp` directory.
+    ```bash
+    cd frontend-dapp
+    ```
+2.  Install the dependencies.
+    ```bash
+    npm install
+    ```
+3.  Fill in the `CONTRACT_ADDRESS` and `CONTRACT_ABI` variables at the top of the `src/App.js` file with the details from step 1.
+4.  Start the React application.
+    ```bash
+    npm start
+    ```
+    Your frontend should now be running and open in a browser tab at `http://localhost:3000`.
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 🌐 Usage
 
-### `npm run build` fails to minify
+1.  **Verification**: A verifier/NGO would use a dedicated interface to approve applicants. (This is simulated by the backend's rule engine).
+2.  **Donation**: A donor connects their MetaMask wallet to the React app, selects a campaign, and donates ETH. The transaction is confirmed and the smart contract balance increases.
+3.  **Distribution**: An administrator triggers the backend's `/distribute` endpoint (e.g., via Postman). The Rule Engine fetches the list of verified beneficiaries and calls the smart contract to distribute the funds.
+4.  **Transparency**: Any user can take the contract address and verify all donation and distribution transactions on [Sepolia Etherscan](https://sepolia.etherscan.io/).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a pull request or open an issue for any bugs or feature suggestions.
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
